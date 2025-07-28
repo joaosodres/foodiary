@@ -3,6 +3,9 @@ org: joaosodre
 # "service" is the name of this project. This will also be added to your AWS resource names.
 service: api-foodiary
 
+plugins:
+  - serverless-offline
+
 provider:
   name: aws
   runtime: nodejs22.x
