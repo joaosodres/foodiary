@@ -1,11 +1,12 @@
 import z from "zod";
-
-import { HttpRequest, HttpResponse } from "../types/Http";
-import { badRequest, conflict, created } from "../utils/http";
-import { db } from "../db";
-import { usersTable } from "../db/schema";
 import { eq } from "drizzle-orm";
 import { hash } from "bcryptjs";
+
+import { HttpRequest, HttpResponse } from "../types/Http";
+import { badRequest, conflict, ok } from "../utils/http";
+import { db } from "../db";
+import { usersTable } from "../db/schema";
+import { generateAccessToken } from "../libs/jwt";
 
 const schema = z.object({
   goal: z.enum(["lose", "maintain", "gain"]),
@@ -59,8 +60,8 @@ export class SignUpController {
       id: usersTable.id,
     });
 
-    return created({
-      userId: user.id,
-    });
+    const accessToken = generateAccessToken(user.id);
+
+    return ok({accessToken});
   }
 }
