@@ -8,3 +8,7 @@ export type HttpResponse = {
   statusCode: number;
   body?: Record<string, any>;
 };
+
+export type ProtectedHttpRequest = HttpRequest & {
+  userId: string;
+};

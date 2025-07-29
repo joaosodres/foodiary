@@ -1,1 +1,1 @@
-QUEM RESOLVER NOSSAS ROTAS
+quem 'controla nossas rotas'
