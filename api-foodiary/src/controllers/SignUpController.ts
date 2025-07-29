@@ -7,6 +7,7 @@ import { badRequest, conflict, ok } from "../utils/http";
 import { db } from "../db";
 import { usersTable } from "../db/schema";
 import { generateAccessToken } from "../libs/jwt";
+import { calculateGoals } from "../libs/goalCalculator";
 
 const schema = z.object({
   goal: z.enum(["lose", "maintain", "gain"]),
@@ -43,6 +44,15 @@ export class SignUpController {
 
     const  {account, ...rest} = data;
 
+    const goals = calculateGoals({
+      weight: rest.weight,
+      height: rest.height,
+      gender: rest.gender,
+      birthDate: new Date(rest.birthDate),
+      activityLevel: rest.activityLevel,
+      goal: rest.goal,
+    });
+
     const hashedPassword = await hash(account.password, 8);
 
     const [user] = await db
@@ -50,11 +60,8 @@ export class SignUpController {
     .values({
       ...rest,
       ...account,
-      password: hashedPassword,
-      calories: 0,
-      proteins: 0,
-      carbs: 0,
-      fats: 0,
+      ...goals,
+      password: hashedPassword
     })
     .returning({
       id: usersTable.id,
