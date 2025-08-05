@@ -18,7 +18,7 @@ export class ListMealsController {
     }
 
     const endDate = new Date(data.date);
-    endDate.setUTCHours(23, 59, 59, 999);
+    endDate.setUTCHours(23, 59, 59, 59);
 
     const meals = await db.query.mealsTable.findMany({
       columns: {
@@ -26,14 +26,14 @@ export class ListMealsController {
         foods: true,
         createdAt: true,
         icon: true,
-        name: true
+        name: true,
       },
       where: and(
         eq(mealsTable.userId, userId),
+        eq(mealsTable.status, 'success'),
         gte(mealsTable.createdAt, data.date),
         lte(mealsTable.createdAt, endDate),
-        eq(mealsTable.status, 'success')
-      )
+      ),
     });
 
     return ok({meals});

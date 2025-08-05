@@ -1,6 +1,6 @@
 import { date, integer, json, pgEnum, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
-export const mealStatus = pgEnum("meal_status", ["uploading", "queued", "processing", "success", "failed"]);
+export const mealStatus = pgEnum("meal_status", ["uploading", "processing", "success", "failed"]);
 export const mealInputType = pgEnum("meal_input_type", ["audio", "picture"]);
 
 export const usersTable = pgTable("users", {

@@ -78,13 +78,20 @@ functions:
           method: GET
 
   fileUploadedEvents:
-    handler: src/functions/fileUploadedEvents.handler
+     handler: src/functions/fileUploadedEvents.handler
+     events:
+       - s3:
+           bucket: !Ref UploadsBucket
+           event: s3:ObjectCreated:*
+           existing: true
+           forceDeploy: true
+
+  processMeal:
+    handler: src/functions/processMeal.handler
     events:
-      - s3:
-          bucket: !Ref UploadsBucket
-          event: s3:ObjectCreated:*
-          existing: true
-          forceDeploy: true
+      - sqs:
+          arn: !GetAtt MealsQueue.Arn
+          batchSize: 1
 
 resources:
   Resources:
