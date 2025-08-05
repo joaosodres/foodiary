@@ -64,3 +64,9 @@ functions:
           path: /meals/{mealId}
           method: GET
 
+resources:
+  Resources:
+    UploadsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: joaosodre-foodiary-uploads
